@@ -158,6 +158,12 @@
         </div>
 
         <div class="form-group">
+            <label for="textMargin">Distância do Texto (px)</label>
+            <input type="number" id="textMargin" value="0" step="1">
+            <small style="color: var(--text-light); font-size: 0.75rem; display: block; margin-top: 4px;">Ajusta o espaçamento vertical entre os números e as barras</small>
+        </div>
+
+        <div class="form-group">
             <label for="quietZone">Margem Externa / Bloco (px)</label>
             <input type="number" id="quietZone" value="0" min="0">
         </div>
@@ -204,6 +210,7 @@
         data: document.getElementById('barcodeData'),
         width: document.getElementById('moduleWidth'),
         height: document.getElementById('barcodeHeight'),
+        textMargin: document.getElementById('textMargin'), // Nova referência capturada aqui
         margin: document.getElementById('quietZone'),
         showText: document.getElementById('showText'),
         preview: document.getElementById('barcodePreview'),
@@ -282,6 +289,9 @@
             elements.data.removeAttribute('maxlength');
         }
 
+        // Puxando o valor do novo campo que criamos
+        const marginValueText = parseInt(elements.textMargin.value);
+
         const options = {
             format: barcodeFormat,
             width: parseFloat(elements.width.value) || 2,
@@ -292,7 +302,7 @@
             lineColor: "#000000",
             font: "Arial", 
             fontSize: 20,
-            textMargin: 3, /* Ajustado para 3px conforme pedido */
+            textMargin: isNaN(marginValueText) ? 0 : marginValueText, // Aplica o controle na renderização
             valid: function(valid) { if (!valid) showError(); }
         };
 
@@ -342,6 +352,7 @@
         } catch (err) { alert("Erro ao copiar."); }
     }
 
+    // Listener atualizado para incluir o textMargin
     ['input', 'change'].forEach(evt => {
         elements.type.addEventListener(evt, () => { 
             if (evt === 'change') { elements.data.value = ''; updatePlaceholder(); }
@@ -350,6 +361,7 @@
         elements.data.addEventListener(evt, renderBarcode);
         elements.width.addEventListener(evt, renderBarcode);
         elements.height.addEventListener(evt, renderBarcode);
+        elements.textMargin.addEventListener(evt, renderBarcode); // Dispara a renderização ao mudar a margem do texto
         elements.margin.addEventListener(evt, renderBarcode);
         elements.showText.addEventListener(evt, renderBarcode);
     });
