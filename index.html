@@ -212,7 +212,6 @@
         checkBox: document.getElementById('checkDigitBox')
     };
 
-    // Atualiza a dica visual (placeholder) ao trocar o tipo de código
     function updatePlaceholder() {
         const t = elements.type.value;
         if (t === 'ITF14') elements.data.placeholder = "Ex: 1789123456789 (13 dígitos)";
@@ -222,7 +221,6 @@
         else elements.data.placeholder = "Digite o código...";
     }
 
-    // Motor de cálculo de Dígito Verificador Revisado (Inclui ITF-14 com pesos invertidos)
     function calculateCheckDigit(code, type) {
         if (!/^\d+$/.test(code)) return null;
         let multiplierEven, multiplierOdd, lengthReq;
@@ -234,7 +232,7 @@
         } else if (type === 'EAN8' || type === 'JAN8') {
             lengthReq = 7; multiplierEven = 3; multiplierOdd = 1;
         } else if (type === 'ITF14') {
-            lengthReq = 13; multiplierEven = 3; multiplierOdd = 1; // Regra GS1 para ITF-14
+            lengthReq = 13; multiplierEven = 3; multiplierOdd = 1; 
         } else {
             return null; 
         }
@@ -262,7 +260,6 @@
         elements.statusBadge.innerText = 'Válido';
         elements.checkBox.style.display = 'none';
         
-        // Adicionado ITF14 aos códigos que ganham cálculo automático do último dígito
         const needsCheckDigit = ['EAN13', 'ISBN', 'ISSN', 'JAN13', 'UPC', 'EAN8', 'JAN8', 'ITF14'];
         let finalValue = rawValue;
 
@@ -293,10 +290,9 @@
             displayValue: elements.showText.checked,
             background: "transparent",
             lineColor: "#000000",
-            fontOptions: "regular",
-            font: "Arial",
+            font: "Arial", /* Arial Regular de volta */
             fontSize: 20,
-            textMargin: 0,
+            textMargin: 2, /* 2px de distância exatos, como pedido */
             valid: function(valid) { if (!valid) showError(); }
         };
 
@@ -346,7 +342,6 @@
         } catch (err) { alert("Erro ao copiar."); }
     }
 
-    // Escutadores de eventos
     ['input', 'change'].forEach(evt => {
         elements.type.addEventListener(evt, () => { 
             if (evt === 'change') { elements.data.value = ''; updatePlaceholder(); }
@@ -359,7 +354,6 @@
         elements.showText.addEventListener(evt, renderBarcode);
     });
 
-    // Início
     updatePlaceholder();
     renderBarcode();
 </script>
