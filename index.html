@@ -22,7 +22,8 @@
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', system-ui, sans-serif; }
 
-        body { background-color: var(--bg); color: var(--text); padding: 2rem; display: flex; justify-content: center; min-height: 100vh; }
+        /* Ajuste do min-height e padding do body para eliminar o espaço em branco na parte inferior */
+        body { background-color: var(--bg); color: var(--text); padding: 1rem 2rem; display: flex; align-items: flex-start; justify-content: center; min-height: 100vh; }
 
         #loader {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -47,7 +48,8 @@
 
         @keyframes fadeIn { to { opacity: 1; } }
 
-        .panel { background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); }
+        /* Remover espaços ociosos em excesso */
+        .panel { background: var(--surface); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border); height: fit-content; }
         .brand-logo { max-width: 160px; margin-bottom: 1.5rem; display: block; }
         h2 { font-size: 1rem; margin-bottom: 1rem; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.05em; }
 
@@ -74,7 +76,7 @@
 
         .preview-area {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            background: #ffffff; min-height: 300px; border: 1px dashed var(--border); border-radius: 8px;
+            background: #ffffff; min-height: 250px; border: 1px dashed var(--border); border-radius: 8px;
             padding: 2rem; margin-bottom: 1.5rem; overflow: hidden;
         }
 
@@ -154,7 +156,7 @@
 
         <div class="form-group">
             <label for="barcodeHeight">Altura das Barras (px)</label>
-            <input type="number" id="barcodeHeight" value="80" min="20">
+            <input type="number" id="barcodeHeight" value="100" min="20">
         </div>
 
         <div class="form-group">
@@ -164,7 +166,7 @@
 
         <div class="checkbox-group">
             <input type="checkbox" id="showText" checked>
-            <label for="showText" style="margin: 0; color: var(--text);">Exibir numeração (Arial)</label>
+            <label for="showText" style="margin: 0; color: var(--text);">Exibir numeração</label>
         </div>
     </div>
 
@@ -270,12 +272,13 @@
         const options = {
             format: barcodeFormat,
             width: parseFloat(elements.width.value) || 2,
-            height: parseInt(elements.height.value) || 80,
+            height: parseInt(elements.height.value) || 100, // Altura padrão agora é 100
             margin: parseInt(elements.margin.value) || 0,
             displayValue: elements.showText.checked,
             background: "transparent",
             lineColor: "#000000",
-            font: "Arial", /* Fonte universal atualizada */
+            fontOptions: "bold", // Adiciona peso Bold
+            font: "Arial", // Arial
             fontSize: 20,
             textMargin: 0,
             valid: function(valid) { if (!valid) showError(); }
